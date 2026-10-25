@@ -1,0 +1,16 @@
+# SQLite 数据库（首次请求自动建库并填充模拟数据）
+data/*.sqlite
+data/*.sqlite-journal
+data/*.sqlite-wal
+data/*.sqlite-shm
+
+# 用户上传的图片
+uploads/avatars/*
+uploads/covers/*
+!uploads/avatars/.gitkeep
+!uploads/covers/.gitkeep
+
+# 系统文件
+.DS_Store
+Thumbs.db
+*.log

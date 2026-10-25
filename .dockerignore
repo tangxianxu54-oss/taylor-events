@@ -1,0 +1,11 @@
+# 本地数据库与上传文件不纳入镜像/仓库
+data/*.sqlite
+data/*.sqlite-journal
+data/*.sqlite-wal
+data/*.sqlite-shm
+uploads/avatars/*
+uploads/covers/*
+.git
+.gitignore
+.dockerignore
+Dockerfile
