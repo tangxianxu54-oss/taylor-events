@@ -32,11 +32,7 @@ $scripts = $scripts ?? [];
 <header class="site-header" id="site-header">
     <div class="container header__inner">
         <a class="brand" href="index.php" aria-label="<?= e(APP_NAME) ?> home">
-            <span class="brand__mark" aria-hidden="true">T</span>
-            <span class="brand__text">
-                <strong>Taylor Events</strong>
-                <small>Student Activities</small>
-            </span>
+            <img class="brand__logo" src="assets/img/logo.png" alt="Taylor's College">
         </a>
 
         <nav class="nav" id="primary-nav" aria-label="Main navigation">

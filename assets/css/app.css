@@ -320,6 +320,18 @@ ul {
     box-shadow: 0 8px 18px -10px rgba(45, 26, 82, .8);
 }
 
+.brand__logo {
+    height: 46px;
+    width: auto;
+    display: block;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.brand__logo--footer {
+    height: 58px;
+}
+
 .brand__text {
     display: flex;
     flex-direction: column;

@@ -70,7 +70,7 @@ $years = ['Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate', 'Staff'];
             <span class="field__label">Location</span>
             <input class="input" type="text" name="location" maxlength="120" required
                    placeholder="e.g. Hodson Dining Commons"
-                   value="<?= e($value('location')) ?>">
+                   value="<?= e($value('location') !== '' ? $value('location') : ($isEdit ? '' : "Taylor's University")) ?>">
         </label>
 
         <div class="field-grid">

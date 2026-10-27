@@ -10,11 +10,7 @@ $user = current_user();
     <div class="container footer__grid">
         <div class="footer__brand">
             <a class="brand brand--light" href="index.php">
-                <span class="brand__mark" aria-hidden="true">T</span>
-                <span class="brand__text">
-                    <strong>Taylor Events</strong>
-                    <small>Student Activities</small>
-                </span>
+                <img class="brand__logo brand__logo--footer" src="assets/img/logo.png" alt="Taylor's College">
             </a>
             <p>One place for everything happening on campus — from intramural finals to late-night pancakes.</p>
             <span class="footer__note">A student project · <?= e(CAMPUS_NAME) ?></span>
