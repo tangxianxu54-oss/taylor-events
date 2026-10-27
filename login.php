@@ -94,14 +94,6 @@ require __DIR__ . '/includes/header.php';
                 </button>
             </form>
 
-            <div class="demo-box">
-                <div>
-                    <strong>Demo account</strong>
-                    <span>emma.carter@taylor.edu · password123</span>
-                </div>
-                <button type="button" class="btn btn--ghost btn--xs" data-fill-demo>Fill it in</button>
-            </div>
-
             <p class="auth__alt">New to Taylor Events? <a href="register.php">Create an account</a></p>
         </div>
     </div>
