@@ -19,6 +19,7 @@ $user = current_user();
         <div class="footer__col">
             <h4>Explore</h4>
             <a href="events.php">All events</a>
+            <a href="workshops.php">Workshops &amp; seminars</a>
             <a href="events.php?when=upcoming">Happening soon</a>
             <a href="events.php?category=sports">Sports</a>
             <a href="events.php?category=arts">Arts &amp; Culture</a>
@@ -27,7 +28,9 @@ $user = current_user();
         <div class="footer__col">
             <h4>Get involved</h4>
             <a href="create-event.php">Host an event</a>
+            <a href="create-workshop.php">Host a workshop</a>
             <a href="my-events.php">My events</a>
+            <a href="my-bookings.php">My workshop bookings</a>
             <a href="events.php?category=service">Service opportunities</a>
             <a href="events.php?category=wellness">Wellness programs</a>
         </div>

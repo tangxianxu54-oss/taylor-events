@@ -3309,3 +3309,105 @@ body.modal-open {
         scroll-behavior: auto !important;
     }
 }
+
+/* ------------------------------------------ Workshop & Seminar booking */
+
+.ws-mode-tag {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    padding: .3rem .6rem;
+    border-radius: 999px;
+    background: rgba(24, 14, 38, .72);
+    color: #fff;
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .01em;
+    backdrop-filter: blur(6px);
+}
+
+.workshop-card .event-card__meta svg {
+    color: var(--purple);
+}
+
+.pill--code {
+    background: var(--cream-deep);
+    color: var(--ink);
+    font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+    letter-spacing: .04em;
+}
+
+.booking-confirmed {
+    display: flex;
+    align-items: flex-start;
+    gap: .65rem;
+    padding: .8rem .9rem;
+    margin-bottom: .7rem;
+    border-radius: var(--radius-sm);
+    background: var(--green-soft);
+    color: var(--green);
+    border: 1px solid rgba(30, 123, 77, .18);
+}
+
+.booking-confirmed__icon {
+    display: inline-flex;
+    color: var(--green);
+}
+
+.booking-confirmed strong {
+    display: block;
+    font-size: .82rem;
+    line-height: 1.3;
+}
+
+.booking-code {
+    display: inline-block;
+    margin-top: .25rem;
+    font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+    font-size: .95rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    color: var(--ink);
+}
+
+.workshop-host-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    margin: 3.4rem 0 1rem;
+    padding: 2rem 2.2rem;
+    border-radius: var(--radius);
+    background: linear-gradient(120deg, var(--purple-soft), var(--cream-deep));
+    border: 1px solid var(--line);
+}
+
+.workshop-host-cta h2 {
+    margin: .35rem 0 .4rem;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 1.6rem;
+    color: var(--purple-deep);
+}
+
+.workshop-host-cta p {
+    margin: 0;
+    max-width: 46ch;
+    color: var(--muted);
+    font-size: .92rem;
+}
+
+.workshop-host-cta .btn {
+    flex-shrink: 0;
+}
+
+@media (max-width: 760px) {
+    .workshop-host-cta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.2rem;
+        padding: 1.6rem;
+    }
+}

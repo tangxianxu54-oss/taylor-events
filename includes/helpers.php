@@ -378,3 +378,144 @@ function render_booking_button(array $event, ?array $user, bool $registered): st
     return '<button class="btn btn--primary btn--full" type="button" data-register="register" data-event-id="' . $id . '">'
         . icon('ticket', 18) . ' Reserve my spot</button>';
 }
+
+/* ----------------------------------------- Workshop & Seminar 表单 / 预约 */
+
+function workshop_form_values(): array
+{
+    return [
+        'title' => post_str('title'),
+        'topic_id' => (string) post_int('topic_id'),
+        'speaker' => post_str('speaker'),
+        'mode' => post_str('mode', 'in-person'),
+        'location' => post_str('location'),
+        'start_at' => post_str('start_at'),
+        'end_at' => post_str('end_at'),
+        'capacity' => post_str('capacity'),
+        'description' => post_str('description'),
+    ];
+}
+
+/**
+ * 校验 workshop 表单，返回 [errors, start_at, end_at]
+ */
+function validate_workshop_form(array $form, array $topics): array
+{
+    $errors = [];
+
+    if (mb_strlen($form['title']) < 3) {
+        $errors[] = 'Workshop title needs at least 3 characters.';
+    } elseif (mb_strlen($form['title']) > 100) {
+        $errors[] = 'Workshop title is too long (max 100 characters).';
+    }
+
+    $validIds = array_map('strval', array_column($topics, 'id'));
+    if (!in_array((string) $form['topic_id'], $validIds, true)) {
+        $errors[] = 'Please choose a valid topic.';
+    }
+
+    if (mb_strlen($form['speaker']) < 2) {
+        $errors[] = 'Please add the speaker or facilitator name.';
+    } elseif (mb_strlen($form['speaker']) > 90) {
+        $errors[] = 'Speaker name is too long (max 90 characters).';
+    }
+
+    if (!in_array($form['mode'], ['in-person', 'online', 'hybrid'], true)) {
+        $errors[] = 'Please choose a valid format.';
+    }
+
+    if (mb_strlen($form['location']) < 2) {
+        $errors[] = 'Please add a location or meeting link.';
+    } elseif (mb_strlen($form['location']) > 160) {
+        $errors[] = 'Location is too long (max 160 characters).';
+    }
+
+    if (mb_strlen($form['description']) < 20) {
+        $errors[] = 'Description needs at least 20 characters.';
+    } elseif (mb_strlen($form['description']) > 4000) {
+        $errors[] = 'Description is too long (max 4000 characters).';
+    }
+
+    $capacity = (int) $form['capacity'];
+    if ($capacity < 1 || $capacity > 500) {
+        $errors[] = 'Seats must be between 1 and 500.';
+    }
+
+    $startAt = parse_datetime_input($form['start_at']);
+    $endAt = parse_datetime_input($form['end_at']);
+    if (!$startAt) {
+        $errors[] = 'Please choose a valid start date and time.';
+    }
+    if (!$endAt) {
+        $errors[] = 'Please choose a valid end date and time.';
+    }
+    if ($startAt && $endAt && new DateTimeImmutable($endAt, new DateTimeZone(CAMPUS_TZ))
+            <= new DateTimeImmutable($startAt, new DateTimeZone(CAMPUS_TZ))) {
+        $errors[] = 'The end time must be after the start time.';
+    }
+
+    return [$errors, $startAt, $endAt];
+}
+
+/**
+ * 生成预约确认码，如 WS-7K4Q2M
+ */
+function generate_booking_code(): string
+{
+    $alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    $code = '';
+    for ($i = 0; $i < 6; $i++) {
+        $code .= $alphabet[random_int(0, strlen($alphabet) - 1)];
+    }
+    return 'WS-' . $code;
+}
+
+/**
+ * 渲染 workshop 详情页的预约区域（服务端与 AJAX 共用）
+ */
+function render_workshop_booking_button(array $workshop, ?array $user, ?array $booking): string
+{
+    $id = (int) $workshop['id'];
+
+    if (!$user) {
+        $next = urlencode('workshop.php?id=' . $id);
+        return '<a class="btn btn--primary btn--full" href="login.php?next=' . $next . '">'
+            . icon('lock', 17) . ' Sign in to book</a>';
+    }
+
+    if ((int) $user['verified'] !== 1) {
+        return '<a class="btn btn--primary btn--full" href="verify.php">'
+            . icon('shield', 17) . ' Verify your email to book</a>';
+    }
+
+    if ((int) $workshop['host_id'] === (int) $user['id']) {
+        return '<a class="btn btn--primary btn--full" href="edit-workshop.php?id=' . $id . '">'
+            . icon('edit', 17) . ' Edit your workshop</a>';
+    }
+
+    if ($booking && $booking['status'] === 'booked') {
+        $html = '<div class="booking-confirmed">'
+            . '<span class="booking-confirmed__icon">' . icon('check-circle', 20) . '</span>'
+            . '<div><strong>Your seat is confirmed</strong>'
+            . '<span class="booking-code">' . e($booking['code']) . '</span></div>'
+            . '</div>';
+
+        if (!$workshop['is_started']) {
+            $html .= '<button class="btn btn--ghost btn--full" type="button"'
+                . ' data-workshop-book="cancel" data-workshop-id="' . $id . '">Cancel booking</button>';
+        }
+        return $html;
+    }
+
+    if ($workshop['is_started']) {
+        return '<button class="btn btn--ghost btn--full" type="button" disabled>Booking closed</button>';
+    }
+
+    if ($workshop['is_full']) {
+        return '<button class="btn btn--ghost btn--full" type="button" disabled>All seats booked</button>';
+    }
+
+    return '<button class="btn btn--primary btn--full" type="button"'
+        . ' data-workshop-book="book" data-workshop-id="' . $id . '">'
+        . icon('ticket', 18) . ' Book my seat</button>';
+}

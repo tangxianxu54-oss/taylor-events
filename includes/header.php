@@ -38,6 +38,7 @@ $scripts = $scripts ?? [];
         <nav class="nav" id="primary-nav" aria-label="Main navigation">
             <a class="nav__link<?= is_active('home', $page) ?>" href="index.php"<?= $page === 'home' ? ' aria-current="page"' : '' ?>>Home</a>
             <a class="nav__link<?= is_active('events', $page) ?>" href="events.php"<?= $page === 'events' ? ' aria-current="page"' : '' ?>>Browse events</a>
+            <a class="nav__link<?= in_array($page, ['workshops', 'workshop'], true) ? ' is-active' : '' ?>" href="workshops.php">Workshops</a>
             <?php if ($user): ?>
                 <a class="nav__link<?= is_active('create', $page) ?>" href="create-event.php">Host an event</a>
                 <a class="nav__link<?= is_active('my-events', $page) ?>" href="my-events.php">My events</a>
@@ -77,7 +78,9 @@ $scripts = $scripts ?? [];
                         </div>
                         <a class="user-menu__item" href="profile.php"><?= icon('user', 17) ?> My profile</a>
                         <a class="user-menu__item" href="my-events.php"><?= icon('ticket', 17) ?> My events</a>
+                        <a class="user-menu__item" href="my-bookings.php"><?= icon('presentation', 17) ?> My workshop bookings</a>
                         <a class="user-menu__item" href="create-event.php"><?= icon('plus', 17) ?> Host an event</a>
+                        <a class="user-menu__item" href="create-workshop.php"><?= icon('presentation', 17) ?> Host a workshop</a>
                         <form method="post" action="logout.php" class="user-menu__logout">
                             <?= csrf_field() ?>
                             <button type="submit" class="user-menu__item"><?= icon('logout', 17) ?> Sign out</button>

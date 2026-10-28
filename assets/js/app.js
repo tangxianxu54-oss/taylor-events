@@ -288,6 +288,127 @@
         }
     }
 
+    /* ------------------------------------------------- workshop booking */
+
+    function updateWorkshopBooking(data) {
+        const actions = $('[data-booking-actions]');
+        if (actions && data.booking_html) {
+            actions.innerHTML = data.booking_html;
+        }
+        const going = $('[data-going-count]');
+        if (going) going.textContent = data.going_count;
+
+        const left = $('[data-spots-left]');
+        if (left) left.textContent = `${data.spots_left} seats left`;
+
+        const fill = $('[data-fill]');
+        if (fill) fill.style.width = `${data.fill_percent}%`;
+
+        const progress = $('[data-progress]');
+        if (progress) progress.classList.toggle('progress--full', Boolean(data.is_full));
+    }
+
+    async function handleWorkshopBooking(button) {
+        const id = button.dataset.workshopId;
+        const action = button.dataset.workshopBook;
+        if (!id) return;
+
+        if (action === 'cancel') {
+            const ok = await confirmDialog(
+                'Cancel this booking?',
+                'Your seat will be released to other students. You can book again while seats remain.',
+                'Cancel booking',
+                true
+            );
+            if (!ok) return;
+        }
+
+        button.disabled = true;
+        button.classList.add('is-loading');
+        try {
+            const data = withCsrf();
+            data.append('id', id);
+            data.append('action', action);
+            const payload = await postAjax('api/workshop-bookings.php', data);
+            toast(payload.message, 'success');
+            updateWorkshopBooking(payload);
+        } catch (error) {
+            toast(error.message, 'error');
+            if (button.isConnected) {
+                button.disabled = false;
+                button.classList.remove('is-loading');
+            }
+        }
+    }
+
+    async function handleCancelBooking(button) {
+        const id = button.dataset.cancelBooking;
+        if (!id) return;
+
+        const ok = await confirmDialog(
+            'Cancel this booking?',
+            'Your seat will be released to other students. Your booking code stops working.',
+            'Cancel booking',
+            true
+        );
+        if (!ok) return;
+
+        button.disabled = true;
+        try {
+            const data = withCsrf();
+            data.append('id', id);
+            data.append('action', 'cancel');
+            const payload = await postAjax('api/workshop-bookings.php', data);
+            toast(payload.message, 'success');
+
+            const row = button.closest('[data-booked-workshop]');
+            if (!row) return;
+
+            row.classList.add('is-removing');
+            setTimeout(() => {
+                row.remove();
+                const stat = $('[data-stat-booked]');
+                if (stat) {
+                    stat.textContent = String(Math.max(0, parseInt(stat.textContent, 10) - 1));
+                }
+                if (!$('[data-booked-workshop]')) {
+                    window.location.reload();
+                }
+            }, 300);
+        } catch (error) {
+            toast(error.message, 'error');
+            button.disabled = false;
+        }
+    }
+
+    async function handleDeleteWorkshop(button) {
+        const id = button.dataset.deleteWorkshop;
+        if (!id) return;
+
+        const ok = await confirmDialog(
+            'Delete this workshop?',
+            'Every booking and booking code will be removed. This cannot be undone.',
+            'Delete workshop',
+            true
+        );
+        if (!ok) return;
+
+        button.disabled = true;
+        try {
+            const data = withCsrf();
+            data.append('id', id);
+            data.append('action', 'delete');
+            const payload = await postAjax('api/workshops.php', data);
+            toast(payload.message || 'Workshop deleted.', 'success');
+            setTimeout(() => {
+                window.location.href = 'my-bookings.php?tab=hosting';
+            }, 500);
+        } catch (error) {
+            toast(error.message, 'error');
+            button.disabled = false;
+        }
+    }
+
     document.addEventListener('click', async (event) => {
         const register = event.target.closest('[data-register]');
         if (register) {
@@ -310,12 +431,33 @@
             return;
         }
 
+        const workshopBook = event.target.closest('[data-workshop-book]');
+        if (workshopBook) {
+            event.preventDefault();
+            await handleWorkshopBooking(workshopBook);
+            return;
+        }
+
+        const cancelBooking = event.target.closest('[data-cancel-booking]');
+        if (cancelBooking) {
+            event.preventDefault();
+            await handleCancelBooking(cancelBooking);
+            return;
+        }
+
+        const removeWorkshop = event.target.closest('[data-delete-workshop]');
+        if (removeWorkshop) {
+            event.preventDefault();
+            await handleDeleteWorkshop(removeWorkshop);
+            return;
+        }
+
         const copy = event.target.closest('[data-copy-link]');
         if (copy) {
             event.preventDefault();
             try {
                 await navigator.clipboard.writeText(window.location.href);
-                toast('Event link copied to your clipboard.', 'success');
+                toast('Link copied to your clipboard.', 'success');
             } catch {
                 toast('Could not copy the link. Copy it from the address bar.', 'error');
             }

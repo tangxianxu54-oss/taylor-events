@@ -41,6 +41,9 @@ function icon(string $name, int $size = 20): string
         'alert' => '<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/>',
         'info' => '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
         'star' => '<path d="m12 3.5 2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1L3.2 10l6.1-.9L12 3.5Z"/>',
+        'presentation' => '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8.5 21h7"/>',
+        'microphone' => '<rect x="9" y="3" width="6" height="10" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0"/><path d="M12 17.5V21"/>',
+        'video' => '<rect x="3" y="6" width="12" height="12" rx="2.5"/><path d="m15 11 5.5-3.5v9L15 13"/>',
     ];
 
     $body = $paths[$name] ?? $paths['sparkles'];
