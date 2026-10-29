@@ -279,8 +279,7 @@ ul {
 /* ---------------------------------------------------------------- header */
 
 .site-header {
-    position: sticky;
-    top: 0;
+    position: static;
     z-index: 90;
     background: rgba(250, 248, 244, .9);
     backdrop-filter: blur(14px);
@@ -289,7 +288,7 @@ ul {
 }
 
 .site-header.is-scrolled {
-    box-shadow: 0 16px 32px -28px rgba(36, 19, 56, .55);
+    box-shadow: none;
 }
 
 .header__inner {
