@@ -16,7 +16,7 @@ require __DIR__ . '/includes/header.php';
 
 <section class="hero">
     <div class="hero__media">
-        <img src="<?= e(hero_image_url()) ?>" alt="Taylor University campus in autumn" onerror="this.remove()">
+        <img src="assets/img/hero-campus.png" alt="Taylor University campus" onerror="this.remove()">
     </div>
     <div class="hero__overlay" aria-hidden="true"></div>
 

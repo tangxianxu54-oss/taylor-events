@@ -536,7 +536,7 @@ ul {
     padding: 84px 0 60px;
     overflow: hidden;
     color: #fff;
-    background: linear-gradient(135deg, var(--purple-deep), #5D3A9B 60%, #7A55B8);
+    background: #1a1230;
 }
 
 .hero__media {
@@ -548,14 +548,16 @@ ul {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center 40%;
+    display: block;
 }
 
 .hero__overlay {
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(100deg, rgba(23, 12, 44, .94) 0%, rgba(32, 16, 60, .82) 44%, rgba(32, 16, 60, .34) 100%),
-        linear-gradient(0deg, rgba(20, 10, 40, .72), rgba(20, 10, 40, 0) 46%);
+        linear-gradient(100deg, rgba(20, 10, 40, .88) 0%, rgba(20, 10, 40, .7) 44%, rgba(20, 10, 40, .4) 100%),
+        linear-gradient(0deg, rgba(20, 10, 40, .65), rgba(20, 10, 40, 0) 46%);
 }
 
 .hero__content {
